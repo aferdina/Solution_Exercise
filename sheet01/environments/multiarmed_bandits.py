@@ -136,7 +136,7 @@ if __name__ == "__main__":
     arm_probabilities_bernoulli = [0.1, 0.9, 0.1, 0.1]
     VARMAXSTEPS = len(arm_probabilities_bernoulli)
     bandit_env = BernoulliBanditEnv(
-        p_parameter=arm_probabilities_bernoulli, max_steps=VARMAXSTEPS)
+        mean_parameter=arm_probabilities_bernoulli, max_steps=VARMAXSTEPS)
     for play_action in range(len(arm_probabilities_bernoulli)):
         _, get_reward, _, _ = bandit_env.step(play_action)
         print("Arm", play_action, "gave a reward of:", get_reward)
