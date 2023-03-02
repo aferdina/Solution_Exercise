@@ -45,7 +45,7 @@ class GaussianBanditEnv(BaseBanditEnv):
     """ class for creating gaussian bandit
     """
 
-    def __init__(self, mean_parameter, max_steps):
+    def __init__(self, mean_parameter, max_steps, var_scale=1.0):
         """create a multiarm bandit with `len(p_parameter)` arms
 
         Args:
@@ -55,6 +55,7 @@ class GaussianBanditEnv(BaseBanditEnv):
         super().__init__(mean_parameter=mean_parameter, max_steps=max_steps)
 
         self.p_parameter = mean_parameter
+        self.var_scale = var_scale
 
     def step(self, action):
         """ play an action in the gaussian bandit modell
@@ -68,7 +69,7 @@ class GaussianBanditEnv(BaseBanditEnv):
         assert action in range(
             self.n_arms), f"the action {action} is not valid"
         reward = np.random.normal(
-            loc=self.p_parameter[action], scale=1.0, size=None)
+            loc=self.p_parameter[action], scale=self.var_scale, size=None)
         self.count += 1
 
         # check if best action was played
@@ -136,7 +137,7 @@ if __name__ == "__main__":
     arm_probabilities_bernoulli = [0.1, 0.9, 0.1, 0.1]
     VARMAXSTEPS = len(arm_probabilities_bernoulli)
     bandit_env = BernoulliBanditEnv(
-        mean_parameter=arm_probabilities_bernoulli, max_steps=VARMAXSTEPS)
+        p_parameter=arm_probabilities_bernoulli, max_steps=VARMAXSTEPS)
     for play_action in range(len(arm_probabilities_bernoulli)):
         _, get_reward, _, _ = bandit_env.step(play_action)
         print("Arm", play_action, "gave a reward of:", get_reward)
