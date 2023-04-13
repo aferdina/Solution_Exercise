@@ -1,9 +1,12 @@
 """ create agents for finite games"""
 from typing import Optional, Union
-from gym import Env, spaces
+
 import numpy as np
+from gym import Env, spaces
+
 from .base_agent import BaseAgent
 from ..environments.grid_world import GridWorld
+
 
 # pylint: disable=too-few-public-methods
 class FiniteAgent(BaseAgent):
@@ -46,7 +49,7 @@ class FiniteAgent(BaseAgent):
                             policy_shape: np.ndarray,
                             num_acts: int) -> None:
         if policy_type == 'uniform':
-            self.policy = np.ones(policy_shape)/num_acts
+            self.policy = np.ones(policy_shape) / num_acts
         elif policy_type == 'greedy' and self.state_type == 'MultiDiscrete':
             self.policy = np.zeros(policy_shape)
             for i in range(self.obs_shape[0]):
@@ -96,5 +99,5 @@ class FiniteAgent(BaseAgent):
                 state = tuple(state)
             state_prob = self.policy[state]
             state_prob[list(not_pos_actions)] = 0.0
-            state_prob = state_prob/sum(state_prob)
+            state_prob = state_prob / sum(state_prob)
             self.policy[state] = state_prob

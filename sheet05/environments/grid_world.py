@@ -1,11 +1,13 @@
 """ implementation of grid search environment from lecture notes"""
 from typing import Optional, Tuple
-from gym import spaces, Env
-import numpy as np
-import matplotlib.pyplot as plt
 
+import matplotlib.pyplot as plt
+import numpy as np
+from gym import spaces, Env
 
 START_STATE = np.array([0, 0], dtype=np.int32)
+
+
 # pylint: disable=too-many-instance-attributes
 
 
@@ -20,13 +22,13 @@ class GridWorld(Env):
         self.observation_space = spaces.MultiDiscrete([size, size])
         self.action_space = spaces.Discrete(4)
         self.action_to_direction = {
-            0: np.array([1, 0]),        # going down
-            1: np.array([0, 1]),        # going right
-            2: np.array([-1, 0]),       # going up
-            3: np.array([0, -1]),       # going left
+            0: np.array([1, 0]),  # going down
+            1: np.array([0, 1]),  # going right
+            2: np.array([-1, 0]),  # going up
+            3: np.array([0, -1]),  # going left
         }
-        self.goal_position = [size-1, size-1]   # position of the goal
-        self.bomb_position = [size-2, size-2]   # position of the bomb
+        self.goal_position = [size - 1, size - 1]  # position of the goal
+        self.bomb_position = [size - 2, size - 2]  # position of the bomb
 
         # reset environment
         self.state = None
@@ -53,16 +55,17 @@ class GridWorld(Env):
         return next_state, reward, done, {}
 
     def reset(
-        self,
-        *,
-        seed: Optional[int] = None,
-        options: Optional[dict] = None,
+            self,
+            *,
+            seed: Optional[int] = None,
+            options: Optional[dict] = None,
     ):
         super().reset(seed=seed)
         self.state = START_STATE
-        return 
+        return
 
-    # TODO: implement get_valid_actions in a better way
+        # TODO: implement get_valid_actions in a better way
+
     def get_valid_actions(self, agent_position: np.ndarray) -> list[int]:
         """ get a list with all valid actions given a specific position
 
@@ -75,25 +78,25 @@ class GridWorld(Env):
         if agent_position[0] == 0:
             if agent_position[1] == 0:
                 return [0, 1]
-            if agent_position[1] == self.size-1:
+            if agent_position[1] == self.size - 1:
                 return [0, 3]
             return [0, 1, 3]
-        if agent_position[0] == self.size-1:
+        if agent_position[0] == self.size - 1:
             if agent_position[1] == 0:
                 return [1, 2]
-            if agent_position[1] == self.size-1:
+            if agent_position[1] == self.size - 1:
                 return [2, 3]
             return [1, 2, 3]
         if agent_position[1] == 0:
             return [0, 1, 2]
-        if agent_position[1] == self.size-1:
+        if agent_position[1] == self.size - 1:
             return [0, 2, 3]
         return [0, 1, 2, 3]
 
     def calculate_probability(self, state: np.ndarray, action: int):
         """calculate the probability of transitioning to next states given state and action"""
         prob_next_state = np.zeros(self.observation_space.nvec)
-        prob_next_state[tuple(state+self.action_to_direction[action])] = 1
+        prob_next_state[tuple(state + self.action_to_direction[action])] = 1
         return prob_next_state
 
     def render(self):
@@ -105,11 +108,11 @@ class GridWorld(Env):
         grid[self.bomb_position[0]][self.bomb_position[1]] = 3
 
         # create a heatmap from the data
-        plt.figure(figsize=(self.size-2, self.size-2))
+        plt.figure(figsize=(self.size - 2, self.size - 2))
         plt.imshow(grid, cmap='gray', interpolation='none')
         axis = plt.gca()
-        axis.set_xticks(np.arange(self.size)-0.5, labels=np.arange(self.size))
-        axis.set_yticks(np.arange(self.size)-0.5, labels=np.arange(self.size))
+        axis.set_xticks(np.arange(self.size) - 0.5, labels=np.arange(self.size))
+        axis.set_yticks(np.arange(self.size) - 0.5, labels=np.arange(self.size))
         plt.grid(color='b', lw=2, ls='-')
 
         # plot positions of the agent, the bomb and the target position
@@ -125,7 +128,7 @@ class GridWorld(Env):
 
     def get_rewards(self, state: np.ndarray, action: int):
         """get the reward for the next state given the current state and the action"""
-        rewards = np.ones(self.observation_space.nvec)*-1
+        rewards = np.ones(self.observation_space.nvec) * -1
         rewards[tuple(self.goal_position)] = 10
         rewards[tuple(self.bomb_position)] = -10
         return rewards
