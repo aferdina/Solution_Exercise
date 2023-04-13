@@ -75,6 +75,9 @@ class BinomialRandomVariable(BaseDemand):
     def cdf(self, _k_int: int) -> float:
         pass
 
+    def sample(self) -> int:
+        pass
+
 
 class NegativeBinomialRandomVariable:
     """ negative binomial random variable with support for max_inventory """
