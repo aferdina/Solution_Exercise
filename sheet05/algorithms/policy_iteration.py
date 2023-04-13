@@ -1,10 +1,12 @@
 """ Implementation of value iteration and policy iteration for finite gym environments
 """
 from dataclasses import dataclass
-from typing import Union
 from enum import Enum
+from typing import Union
+
 import numpy as np
 from gym import Env, spaces
+
 from sheet05.agents.discrete_agent import FiniteAgent
 from sheet05.environments.grid_world import GridWorld
 
@@ -14,6 +16,7 @@ class PolicyIterationApproaches(Enum):
     """ Enumeration of all possible policy iteration approaches"""
     NAIVE = 'Naive'
     SWEEP = 'Sweep'
+
 
 # setting all requiered policy parameters
 
@@ -39,9 +42,10 @@ class PolicyIteration():
     :param policy: define the agent's policy
     :param environment: environment class
     """
-    # pylint: disable=line-too-long
 
-    def __init__(self, environment: Union[Env, str] = GridWorld(5), policy=FiniteAgent(), policyparameter: PolicyIterationParameter = PolicyIterationParameter(approach='Naive', epsilon=0.01, gamma=0.9), verbose: int = 0) -> None:
+    def __init__(self, environment: Union[Env, str] = GridWorld(5), policy=FiniteAgent(),
+                 policyparameter: PolicyIterationParameter = PolicyIterationParameter(approach='Naive', epsilon=0.01, gamma=0.9),
+                 verbose: int = 0) -> None:
         # TODO: adding sweep approach to the algorithm
         self.policyparameter = policyparameter  # policy evaluation parameter
         self.environment = environment  # environment class
@@ -74,7 +78,7 @@ class PolicyIteration():
                 new_value = 0.0
                 for action in range(self.environment.action_space.n):
                     new_value += self.agent.policy[state][action] * \
-                        q_values[state][action]
+                                 q_values[state][action]
                 value_func_new[state] = new_value
             print(f"New Value Func: {value_func_new}")
             # check if the new value function is in an epsilon environment of the old value function
@@ -116,13 +120,13 @@ class PolicyIteration():
                         reward_state_action += prob_next_state * rewards[i]
                     for i, prob_next_state in enumerate(prob_next_states):
                         value_function_next_step += prob_next_state * \
-                            self.value_func[i]
+                                                    self.value_func[i]
                 else:
                     reward_state_action = np.sum(prob_next_states * rewards)
                     value_function_next_step = np.sum(prob_next_states * self.value_func)
 
                 q_values[state][act] += reward_state_action + \
-                    self.policyparameter.gamma*value_function_next_step
+                                        self.policyparameter.gamma * value_function_next_step
         return q_values
 
     def policy_iteration(self) -> None:

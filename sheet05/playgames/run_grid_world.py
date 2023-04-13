@@ -1,7 +1,7 @@
 """run policy iteration on grid world game"""
 from sheet05.agents.discrete_agent import FiniteAgent
-from sheet05.environments.grid_world import GridWorld
 from sheet05.algorithms.policy_iteration import PolicyIteration
+from sheet05.environments.grid_world import GridWorld
 
 TOTALSTEPS = 10
 

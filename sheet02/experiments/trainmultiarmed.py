@@ -1,4 +1,5 @@
 import numpy as np
+
 from sheet01.experiment.trainingsutils import plot_statistics
 
 
@@ -30,17 +31,16 @@ def train_multiarmed(agent, env, num_games, parameter, printed):
             # playing the game until it is done
             action = agent.select_arm()
             _new_state, reward, done, _info = env.step(action)
-            rewards[game, (env.count-1)] = reward
-            chosen_arms[game, (env.count-1)] = action
-            regrets[game, (env.count-1)] = env.regret
-            optimalities[game, (env.count-1)] = env.played_optimal
+            rewards[game, (env.count - 1)] = reward
+            chosen_arms[game, (env.count - 1)] = action
+            regrets[game, (env.count - 1)] = env.regret
+            optimalities[game, (env.count - 1)] = env.played_optimal
 
             agent.update(action, reward)
 
     if printed:
-
         plot_statistics(prin_rewards=rewards, prin_chosen_arms=chosen_arms, prin_regrets=regrets,
                         prin_optimalities=optimalities, parameter=getattr(
-                            agent, parameter), name=parameter)
+                agent, parameter), name=parameter)
 
     return rewards, chosen_arms, regrets, optimalities

@@ -1,9 +1,9 @@
-from sheet01.environments.multiarmed_bandits import GaussianBanditEnv
-from sheet02.models.mutliarmedmodels import UCB
-from sheet02.experiments.trainmultiarmed import train_multiarmed
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
+from sheet01.environments.multiarmed_bandits import GaussianBanditEnv
+from sheet02.experiments.trainmultiarmed import train_multiarmed
+from sheet02.models.mutliarmedmodels import UCB
 
 MAX_STEPS = 1000
 USED_MEAN_PARAMETERS = [0.1, 0.4, 0.3]
@@ -20,21 +20,21 @@ def calc_ucb_regret_bound(max_steps, used_mean_parameters):
     used_parameters = np.asarray(used_mean_parameters)
     optim_gaps = np.max(used_parameters) - used_parameters
     optim_gaps_withoutzero = optim_gaps[np.nonzero(optim_gaps)[0]]
-    return 3 * np.sum(optim_gaps_withoutzero) + np.int32(16)*np.log(max_steps)*np.sum(1/optim_gaps_withoutzero)
+    return 3 * np.sum(optim_gaps_withoutzero) + np.int32(16) * np.log(max_steps) * np.sum(1 / optim_gaps_withoutzero)
 
 
 def ucb_regret_exp(max_steps, used_mean_parameters, num_games, printed):
     n_arms = len(used_mean_parameters)
     regret_list = []
-    for game_length in range(1, max_steps+1):
+    for game_length in range(1, max_steps + 1):
         print(f"game length is {game_length}")
-    # delta from theorem
-        delta = 1/(float(game_length+1)**2)
+        # delta from theorem
+        delta = 1 / (float(game_length + 1) ** 2)
 
         # initialize agent
         agent = UCB(delta=delta, n_arms=n_arms)
         env = GaussianBanditEnv(
-            mean_parameter=used_mean_parameters, max_steps=game_length+1)
+            mean_parameter=used_mean_parameters, max_steps=game_length + 1)
 
         _rewards, _chosen_arms, regrets, _optimalities = train_multiarmed(
             agent=agent, env=env, num_games=num_games, parameter="delta", printed=False)
@@ -48,7 +48,7 @@ def ucb_regret_exp(max_steps, used_mean_parameters, num_games, printed):
         plt.plot(range(max_steps), regret_list,
                  label=f"mean regret, delta {delta}")
         plt.plot(range(max_steps), calc_ucb_regret_bound(range(max_steps),
-                 used_mean_parameters=used_mean_parameters), label="regret bound")
+                                                         used_mean_parameters=used_mean_parameters), label="regret bound")
         plt.legend()
         plt.show()
 

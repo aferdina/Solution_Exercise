@@ -1,4 +1,3 @@
-
 class ExploreThenCommit():
     """ explore then commit algorithm
     """
@@ -24,7 +23,7 @@ class ExploreThenCommit():
         Returns:
             int: best action based on the estimators of the values
         """
-        if self.explore*self.n_arms < count:
+        if self.explore * self.n_arms < count:
             max_value = max(self.values)
             best_action = (self.values).index(max_value)
             return best_action
@@ -52,4 +51,3 @@ class ExploreThenCommit():
         """
         self.counts_actions = [0 for _ in range(self.n_arms)]
         self.values = [0.0 for _ in range(self.n_arms)]
-

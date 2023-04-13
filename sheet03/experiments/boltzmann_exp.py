@@ -1,8 +1,9 @@
-from sheet01.environments.multiarmed_bandits import GaussianBanditEnv
-from sheet03.models.multiarmedmodels import BoltzmannConstant,BoltzmannGumbel
-from sheet02.experiments.trainmultiarmed import train_multiarmed
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+
+from sheet01.environments.multiarmed_bandits import GaussianBanditEnv
+from sheet02.experiments.trainmultiarmed import train_multiarmed
+from sheet03.models.multiarmedmodels import BoltzmannGumbel
 
 MAX_STEPS = 1000
 N_ARMS = 10
@@ -11,7 +12,6 @@ NUM_GAMES = 3000
 
 
 def bolzmann_exp(max_steps, n_arms, used_temperatures, num_games, printed):
-
     statistics_mean = {}
     statistics_cumsum = {}
     statistics_regrets = {}
@@ -34,7 +34,7 @@ def bolzmann_exp(max_steps, n_arms, used_temperatures, num_games, printed):
                 mean_parameter=mean_parameter, max_steps=max_steps)
             agent.reset()
             reward, _chosen_arms, regret, optimality = train_multiarmed(
-                agent=agent, env=env, num_games=1,parameter="temperature", printed=False)
+                agent=agent, env=env, num_games=1, parameter="temperature", printed=False)
             rewards[game,] = reward
             regrets[game,] = regret
             optimalities[game,] = optimality
@@ -52,14 +52,14 @@ def bolzmann_exp(max_steps, n_arms, used_temperatures, num_games, printed):
         statistics_optimalities[str(temperature)] = mean_optimalities
 
         # print statistics in console
-        print(50*"*")
+        print(50 * "*")
         print(
             f"total mean reward with temperature= {temperature} is {mean_cum_rewards[-1]}")
         print(
             f"total regret with temperature= {temperature} is {mean_regrets[-1]}")
         print(
             f"total optimality with temperature= {temperature} is {mean_optimalities[-1]}")
-        print(50*"*")
+        print(50 * "*")
 
     if printed:
         plt.subplot(4, 1, 1)

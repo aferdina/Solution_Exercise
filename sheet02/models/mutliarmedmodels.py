@@ -1,6 +1,7 @@
-from sheet01.tests.utils import is_float_between_0_and_1, is_positive_integer
-import random
 import math
+import random
+
+from sheet01.tests.utils import is_float_between_0_and_1, is_positive_integer
 
 
 class BaseModel():
@@ -123,7 +124,7 @@ class UCB(BaseModel):
         # update all arms which are played at least one time
         # # pylint: disable=C0301
         for arm in [arm_index for arm_index, already_played in enumerate(self.counts) if already_played != 0]:
-            bonus = math.sqrt((self.prefactor * math.log(1/self.delta)) /
+            bonus = math.sqrt((self.prefactor * math.log(1 / self.delta)) /
                               float(self.counts[arm]))
             self.ucb_values[arm] = self.values[arm] + bonus
 

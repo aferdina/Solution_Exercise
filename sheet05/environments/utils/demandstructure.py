@@ -3,9 +3,11 @@ import random
 from abc import ABC, abstractmethod
 from math import exp, factorial
 
-#TODO: implement further probability distribution for demand in ice vendor game
+
+# TODO: implement further probability distribution for demand in ice vendor game
 class BaseDemand(ABC):
     """Base class for probability distribution for demand in ice vendor game"""
+
     def __init__(self, max_inventory) -> None:
         self.max_inventory = max_inventory
 
@@ -21,8 +23,10 @@ class BaseDemand(ABC):
     def sample(self) -> int:
         """sample from probability distribution for demand in ice vendor game"""
 
+
 class PoissonRandomVariable(BaseDemand):
     """ poisson random variable with support for max_inventory """
+
     def __init__(self, max_inventory: int, lam: float) -> None:
         super().__init__(max_inventory)
         self.lam = lam
@@ -61,6 +65,7 @@ class PoissonRandomVariable(BaseDemand):
 
 class BinomialRandomVariable(BaseDemand):
     """ binomial random variable with support for max_inventory """
+
     def __init__(self, max_inventory: int, _p: float) -> None:
         super().__init__(max_inventory=max_inventory)
 
@@ -73,6 +78,7 @@ class BinomialRandomVariable(BaseDemand):
 
 class NegativeBinomialRandomVariable():
     """ negative binomial random variable with support for max_inventory """
+
     def __init__(self, max_inventory: int, _p: float) -> None:
         super().__init__(max_inventory=max_inventory)
 

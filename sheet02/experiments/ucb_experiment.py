@@ -1,8 +1,9 @@
-from sheet01.environments.multiarmed_bandits import GaussianBanditEnv, BernoulliBanditEnv
-from sheet02.models.mutliarmedmodels import UCB
-from sheet02.experiments.trainmultiarmed import train_multiarmed
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+
+from sheet01.environments.multiarmed_bandits import BernoulliBanditEnv
+from sheet02.experiments.trainmultiarmed import train_multiarmed
+from sheet02.models.mutliarmedmodels import UCB
 
 MAX_STEPS = 1000
 N_ARMS = 10
@@ -11,7 +12,6 @@ NUM_GAMES = 3000
 
 
 def ucb_exp(max_steps, n_arms, used_deltas, num_games, printed):
-
     statistics_mean = {}
     statistics_cumsum = {}
     statistics_regrets = {}
@@ -26,7 +26,7 @@ def ucb_exp(max_steps, n_arms, used_deltas, num_games, printed):
             # mean_parameter = np.random.normal(
             #     loc=0.0, scale=1.0, size=n_arms).tolist()
             mean_parameter = np.random.uniform(
-               low=0.0, high=1.0, size=n_arms).tolist()
+                low=0.0, high=1.0, size=n_arms).tolist()
             env = BernoulliBanditEnv(
                 mean_parameter=mean_parameter, max_steps=max_steps)
             agent.reset()
@@ -49,14 +49,14 @@ def ucb_exp(max_steps, n_arms, used_deltas, num_games, printed):
         statistics_optimalities[str(delta)] = mean_optimalities
 
         # print statistics in console
-        print(50*"*")
+        print(50 * "*")
         print(
             f"total mean reward with delta= {delta} is {mean_cum_rewards[-1]}")
         print(
             f"total regret with delta= {delta} is {mean_regrets[-1]}")
         print(
             f"total optimality with delta= {delta} is {mean_optimalities[-1]}")
-        print(50*"*")
+        print(50 * "*")
 
     if printed:
         plt.subplot(4, 1, 1)

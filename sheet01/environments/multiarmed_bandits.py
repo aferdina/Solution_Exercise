@@ -1,6 +1,7 @@
 """ Include all game environments for multi armed bandits
 """
 import numpy as np
+
 from sheet01.tests.utils import is_list_of_floats, is_positive_integer, check_floats_between_zero_and_one
 
 
@@ -77,7 +78,7 @@ class GaussianBanditEnv(BaseBanditEnv):
             self.played_optimal += 1
 
         # update the regret in the game
-        self.regret += (self.optimal[0]-reward)
+        self.regret += (self.optimal[0] - reward)
 
         # if game is finished `done=True`
         done = bool(self.count >= self.max_steps)
@@ -122,7 +123,7 @@ class BernoulliBanditEnv(BaseBanditEnv):
             self.played_optimal += 1
 
         # update the regret in the game
-        self.regret += (self.optimal[0]-reward)
+        self.regret += (self.optimal[0] - reward)
 
         # if game is finished `done=True`
         done = bool(self.count >= self.max_steps)
@@ -132,7 +133,7 @@ class BernoulliBanditEnv(BaseBanditEnv):
 
 if __name__ == "__main__":
     # play Bernoulli Bandit
-    print(50*"-")
+    print(50 * "-")
     print("play bernoulli bandit")
     arm_probabilities_bernoulli = [0.1, 0.9, 0.1, 0.1]
     VARMAXSTEPS = len(arm_probabilities_bernoulli)
@@ -144,7 +145,7 @@ if __name__ == "__main__":
         print(f"optimal action was {bandit_env.played_optimal} times played")
         print(f"the new regret is {bandit_env.regret}")
 
-    print(50*"-")
+    print(50 * "-")
     print("play gaussian bandit")
     # play Gaussian Bandit
     arm_means_gaussian = [1.0, 2.0, 5.0, 2.0]
