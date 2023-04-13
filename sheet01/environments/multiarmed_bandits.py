@@ -31,7 +31,7 @@ class BaseBanditEnv:
         self.played_optimal = 0
         self.regret = 0.0
 
-    def step(self):
+    def step(self, action):
         pass
 
     def reset(self):
@@ -50,7 +50,7 @@ class GaussianBanditEnv(BaseBanditEnv):
         """create a multiarm bandit with `len(p_parameter)` arms
 
         Args:
-            mean_parameter (list): list containing mean parameter of guassian bandit arms 
+            mean_parameter (list): list containing mean parameter of guassian bandit arms
             max_steps (int): number of total steps for the bandit problem
         """
         super().__init__(mean_parameter=mean_parameter, max_steps=max_steps)
