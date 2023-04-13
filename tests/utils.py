@@ -13,7 +13,7 @@ def is_list_of_floats(lst):
 
 def is_float_between_0_and_1(value):
     if isinstance(value, float):
-        if value >= 0 and value <= 1:
+        if 0 <= value <= 1:
             return True
     return False
 
