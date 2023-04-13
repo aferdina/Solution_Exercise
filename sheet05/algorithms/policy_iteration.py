@@ -35,7 +35,7 @@ class PolicyIterationParameter:
     approach: PolicyIterationApproaches
 
 
-class PolicyIteration():
+class PolicyIteration:
     """
     Class for Policy Evaluation for Naive or Sweep Approach
 

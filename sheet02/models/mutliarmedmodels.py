@@ -4,7 +4,7 @@ import random
 from sheet01.tests.utils import is_float_between_0_and_1, is_positive_integer
 
 
-class BaseModel():
+class BaseModel:
     """ create a basemodel class for multiarmed bandit models
     """
 
@@ -60,7 +60,7 @@ class EpsilonGreedy(BaseModel):
         """
         if random.random() > self.epsilon:
             max_value = max(self.values)
-            best_action = (self.values).index(max_value)
+            best_action = self.values.index(max_value)
             return best_action
         return random.randrange(self.n_arms)
 
@@ -106,7 +106,7 @@ class UCB(BaseModel):
             int: best action based on upper confidence bound
         """
         max_value = max(self.ucb_values)
-        return (self.ucb_values).index(max_value)
+        return self.ucb_values.index(max_value)
 
     def update(self, chosen_arm, reward):
         """ update the ucb bound of the ucb algorithm

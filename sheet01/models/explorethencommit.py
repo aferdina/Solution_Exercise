@@ -1,4 +1,4 @@
-class ExploreThenCommit():
+class ExploreThenCommit:
     """ explore then commit algorithm
     """
 
@@ -25,7 +25,7 @@ class ExploreThenCommit():
         """
         if self.explore * self.n_arms < count:
             max_value = max(self.values)
-            best_action = (self.values).index(max_value)
+            best_action = self.values.index(max_value)
             return best_action
         return count % self.n_arms
 

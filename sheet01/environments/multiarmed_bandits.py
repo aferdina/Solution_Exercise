@@ -5,7 +5,7 @@ import numpy as np
 from sheet01.tests.utils import is_list_of_floats, is_positive_integer, check_floats_between_zero_and_one
 
 
-class BaseBanditEnv():
+class BaseBanditEnv:
     """ class for a basic multiarmed bandit model
     """
 

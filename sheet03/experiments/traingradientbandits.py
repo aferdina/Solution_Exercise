@@ -20,7 +20,7 @@ def train_gradientbandit(agent, env, num_games, printed):
         agent.reset()
         env.reset()
         done = False
-        while (not done):
+        while not done:
             # playing the game until it is done
             action = agent.select_arm()
             _new_state, reward, done, _info = env.step(action)

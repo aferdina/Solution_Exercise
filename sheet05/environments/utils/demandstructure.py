@@ -76,7 +76,7 @@ class BinomialRandomVariable(BaseDemand):
         pass
 
 
-class NegativeBinomialRandomVariable():
+class NegativeBinomialRandomVariable:
     """ negative binomial random variable with support for max_inventory """
 
     def __init__(self, max_inventory: int, _p: float) -> None:

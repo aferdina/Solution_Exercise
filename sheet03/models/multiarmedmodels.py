@@ -133,7 +133,7 @@ class GradientBanditnobaseline(GradientBandit):
         action_prob_vec = np.array([-1 * action_prob for _ in range(self.n_arms)])
         action_prob_vec[chosen_arm] = 1 - action_prob
         # update via memory trick
-        gradients = (self.alpha * (reward)) * action_prob_vec
+        gradients = (self.alpha * reward) * action_prob_vec
 
         # update values
         self.values = self.values + gradients
