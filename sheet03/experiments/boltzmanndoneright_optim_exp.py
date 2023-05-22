@@ -1,9 +1,8 @@
-import matplotlib.pyplot as plt
-import numpy as np
-
 from sheet01.environments.multiarmed_bandits import GaussianBanditEnv
-from sheet02.experiments.trainmultiarmed import train_multiarmed
 from sheet03.models.multiarmedmodels import BoltzmannGumbelRightWay
+from sheet02.experiments.trainmultiarmed import train_multiarmed
+import numpy as np
+import matplotlib.pyplot as plt
 
 MAX_STEPS = 1000
 N_ARMS = 10
@@ -11,6 +10,7 @@ NUM_GAMES = 3000
 
 
 def bolzmann_exp(max_steps, n_arms, num_games, printed):
+
     statistics_mean = {}
     statistics_cumsum = {}
     statistics_regrets = {}
@@ -52,14 +52,14 @@ def bolzmann_exp(max_steps, n_arms, num_games, printed):
     statistics_optimalities["optimal_constant"] = mean_optimalities
 
     # print statistics in console
-    print(50 * "*")
+    print(50*"*")
     print(
         f"total mean reward with optimal constant is {mean_cum_rewards[-1]}")
     print(
         f"total regret with optimal constant is {mean_regrets[-1]}")
     print(
         f"total optimality with optimal constant is {mean_optimalities[-1]}")
-    print(50 * "*")
+    print(50*"*")
 
     if printed:
         plt.subplot(4, 1, 1)

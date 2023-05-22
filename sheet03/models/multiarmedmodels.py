@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
-
 import numpy as np
 
-from sheet01.tests.utils import is_positive_integer, is_positive_float
+from sheet01.tests.utils import is_float_between_0_and_1, is_positive_integer, is_positive_float
 
 
 class BaseModel(ABC):
@@ -40,7 +39,6 @@ class BaseModel(ABC):
         self.counts = np.zeros(self.n_arms, dtype=np.float32)
         self.values = np.zeros(self.n_arms, dtype=np.float32)
 
-
 class GradientBandit(BaseModel):
     """ gradient bandit algorithm
     """
@@ -65,7 +63,7 @@ class GradientBandit(BaseModel):
         """ get probability from an action
         """
         input_vector = np.exp(self.values)
-        return float(input_vector[action] / np.sum(input_vector))
+        return float(input_vector[action]/np.sum(input_vector))
 
     def select_arm(self):
         """ choose arm in the gradient bandit algorithmus
@@ -90,7 +88,7 @@ class GradientBandit(BaseModel):
         action_prob_vec = np.array([-1 * action_prob for _ in range(self.n_arms)])
         action_prob_vec[chosen_arm] = 1 - action_prob
         # update via memory trick
-        gradients = (self.alpha * (reward - self.mean_reward)) * action_prob_vec
+        gradients = (self.alpha * (reward -self.mean_reward)) * action_prob_vec
 
         # update values
         self.values = self.values + gradients
@@ -133,11 +131,10 @@ class GradientBanditnobaseline(GradientBandit):
         action_prob_vec = np.array([-1 * action_prob for _ in range(self.n_arms)])
         action_prob_vec[chosen_arm] = 1 - action_prob
         # update via memory trick
-        gradients = (self.alpha * reward) * action_prob_vec
+        gradients = (self.alpha * (reward)) * action_prob_vec
 
         # update values
         self.values = self.values + gradients
-
 
 class BoltzmannConstant(BaseModel):
     """ boltzmann exploration algorithm also known as softmax bandit
@@ -167,12 +164,12 @@ class BoltzmannConstant(BaseModel):
         probs = (input_vector / np.sum(input_vector)).tolist()
         x = np.random.rand()
         cum = 0
-        for i, p in enumerate(probs):
+        for i,p in enumerate(probs):
             cum += p
             if x < cum:
                 break
         return i
-        # return np.random.choice(self.n_arms, p=input_vector)
+        #return np.random.choice(self.n_arms, p=input_vector)
 
     def update(self, chosen_arm, reward):
         """ update the value estimators and counts based on the new observed
@@ -188,7 +185,7 @@ class BoltzmannConstant(BaseModel):
         value = self.values[chosen_arm]
         # update via memory trick
         new_value = ((times_played_chosen_arm - 1) / times_played_chosen_arm) * \
-                    value + (1 / times_played_chosen_arm) * reward
+            value + (1 / times_played_chosen_arm) * reward
         self.values[chosen_arm] = new_value
 
 
@@ -212,7 +209,7 @@ class BoltzmannGumbel(BoltzmannConstant):
             int: returned action
         """
         _parameter = self.temperature * self.values
-        gumbel_rvs = np.random.gumbel(loc=0, scale=1, size=self.n_arms)
+        gumbel_rvs = np.random.gumbel(loc=0,scale=1,size=self.n_arms)
         return np.argmax(_parameter + gumbel_rvs)
 
 
@@ -238,9 +235,9 @@ class BoltzmannGumbelRightWay(BaseModel):
         """ get action from boltzmann gumbel paper
         """
 
-        gumbel_rvs = np.random.gumbel(loc=0.0, scale=1.0, size=self.n_arms)
-        betas = self.some_constant * np.sqrt(1 / self.counts)
-        used_parameter = self.values + betas * gumbel_rvs
+        gumbel_rvs = np.random.gumbel(loc=0.0,scale=1.0,size=self.n_arms)
+        betas = self.some_constant * np.sqrt(1/self.counts)
+        used_parameter = self.values + betas*gumbel_rvs
         return np.argmax(used_parameter)
 
     def update(self, chosen_arm, reward):
@@ -257,5 +254,5 @@ class BoltzmannGumbelRightWay(BaseModel):
         value = self.values[chosen_arm]
         # update via memory trick
         new_value = ((times_played_chosen_arm - 1) / times_played_chosen_arm) * \
-                    value + (1 / times_played_chosen_arm) * reward
+            value + (1 / times_played_chosen_arm) * reward
         self.values[chosen_arm] = new_value

@@ -1,11 +1,9 @@
-import json
-
-import matplotlib.pyplot as plt
-import numpy as np
-
 from sheet01.environments.multiarmed_bandits import GaussianBanditEnv
-from sheet03.experiments.traingradientbandits import train_gradientbandit
 from sheet03.models.multiarmedmodels import GradientBanditnobaseline
+from sheet03.experiments.traingradientbandits import train_gradientbandit
+import numpy as np
+import matplotlib.pyplot as plt
+import json
 
 MAX_STEPS = 1000
 N_ARMS = 10
@@ -15,6 +13,7 @@ NUM_GAMES = 3000
 
 
 def gradientbanditnobaseline_exp(max_steps, n_arms, used_alpha, num_games, printed):
+
     statistics_mean = {}
     statistics_cumsum = {}
     statistics_regrets = {}
@@ -40,7 +39,7 @@ def gradientbanditnobaseline_exp(max_steps, n_arms, used_alpha, num_games, print
             rewards[game,] = reward
             regrets[game,] = regret
             optimalities[game,] = optimality
-            optimalities_percentage[game,] = optimality_percentage
+            optimalities_percentage[game, ] = optimality_percentage
 
         mean_rewards = np.mean(rewards, axis=0)
         mean_cum_rewards = np.cumsum(mean_rewards)
@@ -56,7 +55,7 @@ def gradientbanditnobaseline_exp(max_steps, n_arms, used_alpha, num_games, print
         statistics_optimalities[str(alpha)] = mean_optimalities.tolist()
         statistic_optimalities_percentage[str(alpha)] = mean_optimalities_percentage.tolist()
         # print statistics in console
-        print(50 * "*")
+        print(50*"*")
         print(
             f"total mean reward with alpha= {alpha} is {mean_cum_rewards[-1]}")
         print(
@@ -65,7 +64,7 @@ def gradientbanditnobaseline_exp(max_steps, n_arms, used_alpha, num_games, print
             f"total optimality with alpha= {alpha} is {mean_optimalities[-1]}")
         print(
             f"total optimality action percentage with alpha= {alpha} is {mean_optimalities_percentage[-1]}")
-        print(50 * "*")
+        print(50*"*")
 
     if printed:
         plt.subplot(5, 1, 1)

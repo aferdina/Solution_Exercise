@@ -1,11 +1,9 @@
-import json
-
-import matplotlib.pyplot as plt
-import numpy as np
-
 from sheet01.environments.multiarmed_bandits import GaussianBanditEnv
-from sheet02.experiments.trainmultiarmed import train_multiarmed
 from sheet03.models.multiarmedmodels import BoltzmannGumbelRightWay
+from sheet02.experiments.trainmultiarmed import train_multiarmed
+import numpy as np
+import matplotlib.pyplot as plt
+import json
 
 MAX_STEPS = 1000
 N_ARMS = 10
@@ -14,6 +12,7 @@ NUM_GAMES = 3000
 
 
 def bolzmann_exp(max_steps, n_arms, used_someconstant, num_games, printed):
+
     statistics_cumsum = []
     statistics_regrets = []
     statistics_optimalities = []
@@ -32,7 +31,7 @@ def bolzmann_exp(max_steps, n_arms, used_someconstant, num_games, printed):
                 mean_parameter=mean_parameter, max_steps=max_steps)
             agent.reset()
             reward, _chosen_arms, regret, optimality = train_multiarmed(
-                agent=agent, env=env, num_games=1, parameter="some_constant", printed=False)
+                agent=agent, env=env, num_games=1,parameter="some_constant", printed=False)
             rewards[game,] = reward
             regrets[game,] = regret
             optimalities[game,] = optimality
@@ -48,16 +47,17 @@ def bolzmann_exp(max_steps, n_arms, used_someconstant, num_games, printed):
         statistics_regrets.append(mean_regrets[-1])
         statistics_optimalities.append(mean_optimalities[-1])
         # print statistics in console
-        print(50 * "*")
+        print(50*"*")
         print(
             f"total mean reward with some_constant= {some_constant} is {mean_cum_rewards[-1]}")
         print(
             f"total regret with some_constant= {some_constant} is {mean_regrets[-1]}")
         print(
             f"total optimality with some_constant= {some_constant} is {mean_optimalities[-1]}")
-        print(50 * "*")
+        print(50*"*")
 
     if printed:
+
         # plot total rewards
         plt.subplot(3, 1, 1)
         plt.plot(used_someconstant, statistics_cumsum,
@@ -83,8 +83,7 @@ def bolzmann_exp(max_steps, n_arms, used_someconstant, num_games, printed):
 
 if __name__ == "__main__":
     statistics_cumsum, statistics_regrets, statistics_optimalities = bolzmann_exp(max_steps=MAX_STEPS, n_arms=N_ARMS,
-                                                                                  used_someconstant=USED_SOMECONSTANT, num_games=NUM_GAMES,
-                                                                                  printed=True)
+                                                                                  used_someconstant=USED_SOMECONSTANT, num_games=NUM_GAMES, printed=True)
 
     save_results = {"total_rewards": statistics_cumsum,
                     "regrets": statistics_regrets, "optimalities": statistics_optimalities}
