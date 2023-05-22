@@ -1,9 +1,8 @@
-import matplotlib.pyplot as plt
-import numpy as np
-
 from sheet01.environments.multiarmed_bandits import GaussianBanditEnv
-from sheet01.experiment.run_explorethencommit import train_exandcommit
 from sheet01.models.explorethencommit import ExploreThenCommit
+from sheet01.experiment.run_explorethencommit import train_exandcommit
+import numpy as np
+import matplotlib.pyplot as plt
 
 MAX_STEPS = 10000
 N_ARMS = 10
@@ -12,6 +11,7 @@ NUM_GAMES = 5000
 
 
 def explorethencommit_exp(max_steps, n_arms, used_explores, num_games, printed):
+
     statistics_mean = {}
     statistics_cumsum = {}
     statistics_regrets = {}
@@ -29,7 +29,7 @@ def explorethencommit_exp(max_steps, n_arms, used_explores, num_games, printed):
                 mean_parameter=mean_parameter, max_steps=max_steps)
             agent.reset()
             reward, _chosen_arms, regret, optimality = train_exandcommit(
-                agent=agent, env=env, num_games=1, parameter="explore", printed=False)
+                agent=agent, env=env, num_games=1,parameter="explore", printed=False)
             rewards[game,] = reward
             regrets[game,] = regret
             optimalities[game,] = optimality
@@ -47,14 +47,14 @@ def explorethencommit_exp(max_steps, n_arms, used_explores, num_games, printed):
         statistics_optimalities[str(explore)] = mean_optimalities
 
         # print statistics in console
-        print(50 * "*")
+        print(50*"*")
         print(
             f"total mean reward with explore= {explore} is {mean_cum_rewards[-1]}")
         print(
             f"total regret with explore= {explore} is {mean_regrets[-1]}")
         print(
             f"total optimality with explore= {explore} is {mean_optimalities[-1]}")
-        print(50 * "*")
+        print(50*"*")
 
     if printed:
         plt.subplot(4, 1, 1)

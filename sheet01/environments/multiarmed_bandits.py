@@ -1,11 +1,10 @@
 """ Include all game environments for multi armed bandits
 """
 import numpy as np
-
 from sheet01.tests.utils import is_list_of_floats, is_positive_integer, check_floats_between_zero_and_one
 
 
-class BaseBanditEnv:
+class BaseBanditEnv():
     """ class for a basic multiarmed bandit model
     """
 
@@ -31,7 +30,7 @@ class BaseBanditEnv:
         self.played_optimal = 0
         self.regret = 0.0
 
-    def step(self, action):
+    def step(self):
         pass
 
     def reset(self):
@@ -50,7 +49,7 @@ class GaussianBanditEnv(BaseBanditEnv):
         """create a multiarm bandit with `len(p_parameter)` arms
 
         Args:
-            mean_parameter (list): list containing mean parameter of guassian bandit arms
+            mean_parameter (list): list containing mean parameter of guassian bandit arms 
             max_steps (int): number of total steps for the bandit problem
         """
         super().__init__(mean_parameter=mean_parameter, max_steps=max_steps)
@@ -78,7 +77,7 @@ class GaussianBanditEnv(BaseBanditEnv):
             self.played_optimal += 1
 
         # update the regret in the game
-        self.regret += (self.optimal[0] - reward)
+        self.regret += (self.optimal[0]-reward)
 
         # if game is finished `done=True`
         done = bool(self.count >= self.max_steps)
@@ -123,7 +122,7 @@ class BernoulliBanditEnv(BaseBanditEnv):
             self.played_optimal += 1
 
         # update the regret in the game
-        self.regret += (self.optimal[0] - reward)
+        self.regret += (self.optimal[0]-reward)
 
         # if game is finished `done=True`
         done = bool(self.count >= self.max_steps)
@@ -133,19 +132,19 @@ class BernoulliBanditEnv(BaseBanditEnv):
 
 if __name__ == "__main__":
     # play Bernoulli Bandit
-    print(50 * "-")
+    print(50*"-")
     print("play bernoulli bandit")
     arm_probabilities_bernoulli = [0.1, 0.9, 0.1, 0.1]
     VARMAXSTEPS = len(arm_probabilities_bernoulli)
     bandit_env = BernoulliBanditEnv(
-        mean_parameter=arm_probabilities_bernoulli, max_steps=VARMAXSTEPS)
+        p_parameter=arm_probabilities_bernoulli, max_steps=VARMAXSTEPS)
     for play_action in range(len(arm_probabilities_bernoulli)):
         _, get_reward, _, _ = bandit_env.step(play_action)
         print("Arm", play_action, "gave a reward of:", get_reward)
         print(f"optimal action was {bandit_env.played_optimal} times played")
         print(f"the new regret is {bandit_env.regret}")
 
-    print(50 * "-")
+    print(50*"-")
     print("play gaussian bandit")
     # play Gaussian Bandit
     arm_means_gaussian = [1.0, 2.0, 5.0, 2.0]

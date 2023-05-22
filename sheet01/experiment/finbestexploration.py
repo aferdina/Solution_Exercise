@@ -1,13 +1,11 @@
-import math
-
-import matplotlib.pyplot as plt
-import numpy as np
-from scipy.optimize import minimize_scalar
-
-from sheet01.environments.multiarmed_bandits import GaussianBanditEnv
-from sheet01.experiment.run_explorethencommit import train_exandcommit
 from sheet01.experiment.trainingsutils import bound_function
+import numpy as np
+from sheet01.environments.multiarmed_bandits import GaussianBanditEnv
+from scipy.optimize import minimize_scalar
 from sheet01.models.explorethencommit import ExploreThenCommit
+from sheet01.experiment.run_explorethencommit import train_exandcommit
+import math
+import matplotlib.pyplot as plt
 
 NUM_GAMES = 5000
 MAX_STEPS = 10000
@@ -15,6 +13,7 @@ N_ARMS = 10
 
 
 def explorethencommit_optim(max_steps, n_arms, num_games, printed):
+
     rewards = np.zeros(shape=(num_games, max_steps))
     regrets = np.zeros(shape=(num_games, max_steps))
     optimalities = np.zeros(shape=(num_games, max_steps))
@@ -23,8 +22,8 @@ def explorethencommit_optim(max_steps, n_arms, num_games, printed):
             loc=0.0, scale=1.0, size=n_arms).tolist()
         env = GaussianBanditEnv(
             mean_parameter=mean_parameter, max_steps=max_steps)
-        deltas = np.max(mean_parameter) - mean_parameter
-        upperbound = max_steps / n_arms
+        deltas = np.max(mean_parameter)-mean_parameter
+        upperbound = max_steps/n_arms
         bounds = [1, upperbound]
         res = minimize_scalar(lambda x_explore: bound_function(
             explore=x_explore, deltas=deltas, number_of_games=max_steps), bounds=bounds)
@@ -42,7 +41,7 @@ def explorethencommit_optim(max_steps, n_arms, num_games, printed):
         optimalities[game,] = optimality
 
     mean_rewards = np.mean(rewards, axis=0)
-    mean_cum_rewards = np.cumsum(mean_rewards, axis=0)
+    mean_cum_rewards = np.cumsum(mean_rewards,axis=0)
     mean_regrets = np.mean(regrets, axis=0)
     mean_optimalities = np.mean(optimalities, axis=0)
     index_array = np.arange(len(mean_optimalities))
