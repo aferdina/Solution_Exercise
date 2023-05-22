@@ -1,9 +1,8 @@
-import matplotlib.pyplot as plt
-import numpy as np
-
-from sheet01.environments.multiarmed_bandits import BernoulliBanditEnv
-from sheet02.experiments.trainmultiarmed import train_multiarmed
+from sheet01.environments.multiarmed_bandits import GaussianBanditEnv, BernoulliBanditEnv
 from sheet02.models.mutliarmedmodels import EpsilonGreedy
+from sheet02.experiments.trainmultiarmed import train_multiarmed
+import numpy as np
+import matplotlib.pyplot as plt
 
 MAX_STEPS = 1000
 N_ARMS = 10
@@ -12,6 +11,7 @@ NUM_GAMES = 3000
 
 
 def epsilon_greedy_exp(max_steps, n_arms, used_epsilons, num_games, printed):
+
     statistics_mean = {}
     statistics_cumsum = {}
     statistics_regrets = {}
@@ -37,7 +37,7 @@ def epsilon_greedy_exp(max_steps, n_arms, used_epsilons, num_games, printed):
             optimalities[game,] = optimality
 
         mean_rewards = np.mean(rewards, axis=0)
-        mean_cum_rewards = np.cumsum(mean_rewards, axis=0)
+        mean_cum_rewards = np.cumsum(mean_rewards,axis=0)
         mean_regrets = np.mean(regrets, axis=0)
         mean_optimalities = np.mean(optimalities, axis=0)
         index_array = np.arange(len(mean_optimalities))
@@ -49,14 +49,14 @@ def epsilon_greedy_exp(max_steps, n_arms, used_epsilons, num_games, printed):
         statistics_optimalities[str(epsilon)] = mean_optimalities
 
         # print statistics in console
-        print(50 * "*")
+        print(50*"*")
         print(
             f"total mean reward with epsilon= {epsilon} is {mean_cum_rewards[-1]}")
         print(
             f"total regret with epsilon= {epsilon} is {mean_regrets[-1]}")
         print(
             f"total optimality with epsilon= {epsilon} is {mean_optimalities[-1]}")
-        print(50 * "*")
+        print(50*"*")
 
     if printed:
         plt.subplot(4, 1, 1)
