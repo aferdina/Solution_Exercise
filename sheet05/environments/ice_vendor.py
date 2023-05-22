@@ -1,17 +1,14 @@
 """ Implementation of Ice Vendor example from lecture"""
 from dataclasses import dataclass
-from enum import Enum
 from typing import Dict, Optional
-
+from enum import Enum
 from gym import spaces, Env
-
 # pylint: disable=C0301
 from ..environments.utils.demandstructure import PoissonRandomVariable, BinomialRandomVariable, NegativeBinomialRandomVariable
 from ..environments.utils.helpfunctions import rgetattr
 
 START_STATE = 0
 MAXSTEPS = float('inf')
-
 
 class DemandStructure(Enum):
     """ Different type of Demand structures """
@@ -71,10 +68,8 @@ class IceVendor(Env):
         reward = self.calculate_selling_price(
             self.state + action - next_state) - self.calculate_storage_cost(next_state) - self.calculate_production_cost(action)
 
-        info = {"demand": demand, "next_state": next_state, "sold_items": self.state + action - next_state,
-                "money_made": self.calculate_selling_price(
-                    self.state + action - next_state), "storage_cost": self.calculate_storage_cost(next_state),
-                "production_cost": self.calculate_production_cost(action)}
+        info = {"demand": demand, "next_state": next_state, "sold_items": self.state + action - next_state, "money_made": self.calculate_selling_price(
+            self.state + action - next_state), "storage_cost": self.calculate_storage_cost(next_state), "production_cost": self.calculate_production_cost(action)}
         self.info = info
         self.state = next_state
 
@@ -97,10 +92,10 @@ class IceVendor(Env):
         return self.game_config.selling_price * sold_products
 
     def reset(
-            self,
-            *,
-            seed: Optional[int] = None,
-            options: Optional[dict] = None,
+        self,
+        *,
+        seed: Optional[int] = None,
+        options: Optional[dict] = None,
     ):
         super().reset(seed=seed)
 
@@ -125,12 +120,13 @@ class IceVendor(Env):
         """get the rewards for a given state and action"""
         rewards = []
         for next_state in range(self.game_config.max_inventory + 1):
-            # what is the number of sold products
+            #what is the number of sold products
             # calculating reward
             reward = self.calculate_selling_price(
                 state + action - next_state) - self.calculate_storage_cost(next_state) - self.calculate_production_cost(action)
             rewards.append(reward)
         return rewards
+
 
     def render(self, _mode: str = "human"):
         print(self.info)

@@ -1,9 +1,7 @@
 """ initialize base class for Finite Agents"""
 from abc import ABC, abstractmethod
 from typing import Optional, Union
-
 import numpy as np
-
 
 # pylint: disable=too-few-public-methods
 
