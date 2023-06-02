@@ -46,7 +46,7 @@ class ExploreThenCommit(BaseModel):
         self.explore = explore
         self.counts_actions = [0 for _ in range(n_arms)]
 
-    def select_arm(self, count: int) -> None:
+    def select_arm(self, count: int) -> int:
         """select the best arm given the estimators of the values
 
         Args:
@@ -61,7 +61,7 @@ class ExploreThenCommit(BaseModel):
             return best_action
         return count % self.n_arms
 
-    def update(self, chosen_arm: int, reward: float):
+    def update(self, chosen_arm: int, reward: float) -> None:
         """update the value estimators and counts based on the new observed
          reward and played action
 
@@ -78,4 +78,3 @@ class ExploreThenCommit(BaseModel):
             (times_played_chosen_arm - 1) / float(times_played_chosen_arm)
         ) * value + (1 / float(times_played_chosen_arm)) * reward
         self.values[chosen_arm] = new_value
-

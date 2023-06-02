@@ -1,3 +1,5 @@
+"""add further multiarmed bandit models
+"""
 from sheet01.tests.utils import is_float_between_0_and_1, is_positive_integer
 from sheet01.models.explorethencommit import BaseModel
 import random
@@ -7,7 +9,7 @@ import math
 class EpsilonGreedy(BaseModel):
     """class for epsilon greedy algorithm"""
 
-    def __init__(self, epsilon, n_arms):
+    def __init__(self, epsilon: float, n_arms: int) -> None:
         """initialize epsilon greedy algorithm
 
         Args:
@@ -20,7 +22,7 @@ class EpsilonGreedy(BaseModel):
         ), f"{epsilon} should be a float between 0 and 1"
         self.epsilon = epsilon
 
-    def select_arm(self):
+    def select_arm(self) -> int:
         """select the best arm given the estimators of the values
 
         Returns:
@@ -32,7 +34,7 @@ class EpsilonGreedy(BaseModel):
             return best_action
         return random.randrange(self.n_arms)
 
-    def update(self, chosen_arm, reward):
+    def update(self, chosen_arm: int, reward: float) -> None:
         """update the value estimators and counts based on the new observed
           reward and played action
 
@@ -54,7 +56,7 @@ class EpsilonGreedy(BaseModel):
 class UCB(BaseModel):
     """class for ucb algorithm"""
 
-    def __init__(self, delta, n_arms, prefactor=2):
+    def __init__(self, delta: float, n_arms: int, prefactor: float = 2.0) -> None:
         """initialize upper confidence bound algorithm
 
         Args:
@@ -69,7 +71,7 @@ class UCB(BaseModel):
         self.ucb_values = [float("inf") for _ in range(self.n_arms)]
         self.prefactor = prefactor
 
-    def select_arm(self):
+    def select_arm(self) -> int:
         """select the best arm given the value estimators and the ucb bound
         Returns:
             int: best action based on upper confidence bound
@@ -77,7 +79,7 @@ class UCB(BaseModel):
         max_value = max(self.ucb_values)
         return (self.ucb_values).index(max_value)
 
-    def update(self, chosen_arm, reward):
+    def update(self, chosen_arm: int, reward: float) -> None:
         """update the ucb bound of the ucb algorithm
 
         Args:
@@ -103,7 +105,7 @@ class UCB(BaseModel):
             )
             self.ucb_values[arm] = self.values[arm] + bonus
 
-    def reset(self):
+    def reset(self) -> None:
         """reset agent by resetting all required statistics"""
         self.counts = [0 for _ in range(self.n_arms)]
         self.values = [0.0 for _ in range(self.n_arms)]
